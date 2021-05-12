@@ -117,7 +117,7 @@ img{
   transition: .4s;
 }
 .nav__container{
-  height: 100%;
+  height: max-content;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -366,4 +366,9 @@ display: grid;
     left: 35%;
     background-color: var(--first-color-light);
     padding: 40px;
+}
+#avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
 }

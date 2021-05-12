@@ -2,8 +2,7 @@
   <nav class="nav__container">
     <div>
       <a href="#sports.php" class="nav__link nav__logo">
-        <img src="public/img/bxs-disc.svg">
-        <span>IA Pronos</span>
+        <img src="public/img/Benoit.jpg" id="avatar"></br>
       </a>
     </div>
 
