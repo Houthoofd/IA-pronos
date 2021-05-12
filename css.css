@@ -233,7 +233,7 @@ button{
   border: none;
   padding: .40rem .75rem;
   border-radius: .25rem;
-  width: 38%;
+  width: 100%;
 }
 .dashboard__container {
     position: fixed;
@@ -345,4 +345,24 @@ display: grid;
     left: 20%;
     height: auto;
     width: 50%;
+}
+
+#inscription {
+    position: fixed;
+    height: max-content;
+    width: min-content;
+    top: 15%;
+    left: 35%;
+    background-color: var(--first-color-light);
+    padding: 40px;
+}
+
+#login {
+    position: fixed;
+    height: max-content;
+    width: min-content;
+    top: 30%;
+    left: 35%;
+    background-color: var(--first-color-light);
+    padding: 40px;
 }
