@@ -203,9 +203,9 @@ img{
 .encodage__container{
   position: fixed;
   top: 12.5%;
-  left: 20%;
-  height: 50%;
-  width: 50%;
+  left: 32%;
+  height: min-content;
+width: max-content;
   background-color: var(--container-color);
   text-align: center;
 }
