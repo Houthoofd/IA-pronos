@@ -42,6 +42,8 @@ body{
 }
 h3{
   margin: 0;
+  text-align: center;
+background-color: gold;
 }
 a{
   text-decoration: none;
@@ -203,18 +205,18 @@ img{
 .encodage__container{
   position: fixed;
   top: 12.5%;
-  left: 32%;
+  left: 42%;
   height: min-content;
-width: max-content;
+  width: max-content;
   background-color: var(--container-color);
   text-align: center;
 }
 .encodage__container__table{
   position: fixed;
   top: 70%;
-  left: 20%;
-  height: 50%;
-  width: 50%;
+  left: 40%;
+  height: max-content;
+  width: min-content;
   background-color: var(--container-color);
 }
 .encodage__container__input{

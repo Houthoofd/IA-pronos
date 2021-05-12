@@ -82,7 +82,7 @@ print_r($data);
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr class="result-row">
           <?php echo '<td>' . $id . '</td>';?>
           <?php echo '<td>' . $date . '</td>';?>
           <?php echo '<td>' . $event . '</td>';?>
