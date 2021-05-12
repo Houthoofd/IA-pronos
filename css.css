@@ -43,7 +43,7 @@ body{
 h3{
   margin: 0;
   text-align: center;
-background-color: gold;
+  background-color: var(--body-font);
 }
 a{
   text-decoration: none;
