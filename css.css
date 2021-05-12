@@ -45,6 +45,7 @@ h3{
 }
 a{
   text-decoration: none;
+  color: var(--body-font);
 }
 img{
   max-width: 100%;
