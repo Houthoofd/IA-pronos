@@ -213,7 +213,7 @@ img{
 }
 .encodage__container__table{
   position: fixed;
-  top: 70%;
+  top: 85%;
   left: 40%;
   height: max-content;
   width: min-content;
@@ -354,7 +354,7 @@ display: grid;
     position: fixed;
     height: max-content;
     width: min-content;
-    top: 15%;
+    top: 0;
     left: 35%;
     background-color: var(--first-color-light);
     padding: 40px;

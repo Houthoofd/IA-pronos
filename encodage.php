@@ -1,15 +1,5 @@
 <?php
-$id = 0;
-$event = ($_POST["event"]);
-$sport = ($_POST["sport"]);
-$date = ($_POST["date"]);
-$cote = ($_POST["cote"]);
-$mise = ($_POST["mise"]);
-$status = ($_POST["status"]);
 
-$data = array();
-array_push($data, $event,$sport,$date,$cote,$mise,$status);
-print_r($data);
 
 ?>
 <html lang="en" dir="ltr">
@@ -23,9 +13,10 @@ print_r($data);
   <body>
   <?php include 'components/header.php'; ?>
   <?php include 'components/navbar.php'; ?>
+  <?php include 'process.php'; ?>
   <div class="encodage__container">
     <h3>Encoder vos paris</h3>
-    <form method="post">
+    <form action="process.php" method="post">
       <div class="encodage__container__input">
         <label for="event"></label>
         <input type="text" class="input-form" name="event" placeholder="Evènement"></br>
@@ -50,7 +41,7 @@ print_r($data);
         <label for="event"></label>
         <input type="text" class="input-form" name="status" placeholder="Status"></br>
       </div>
-      <button type="submit">Encoder</button>
+      <button type="submit" name="encoder">Encoder</button>
     </form>
   </div>
   <?php
