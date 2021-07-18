@@ -213,8 +213,8 @@ img{
 }
 .encodage__container__table{
   position: fixed;
-  top: 85%;
-  left: 40%;
+  top: 78%;
+  left: 11%;
   height: max-content;
   width: min-content;
   background-color: var(--container-color);

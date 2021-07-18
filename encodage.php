@@ -1,7 +1,4 @@
-<?php
 
-
-?>
 <html lang="en" dir="ltr">
   <head>
     <link rel="stylesheet" href="css.css">
@@ -13,10 +10,9 @@
   <body>
   <?php include 'components/header.php'; ?>
   <?php include 'components/navbar.php'; ?>
-  <?php include 'process.php'; ?>
   <div class="encodage__container">
     <h3>Encoder vos paris</h3>
-    <form action="process.php" method="post">
+    <form method="post">
       <div class="encodage__container__input">
         <label for="event"></label>
         <input type="text" class="input-form" name="event" placeholder="Evènement"></br>
@@ -41,7 +37,7 @@
         <label for="event"></label>
         <input type="text" class="input-form" name="status" placeholder="Status"></br>
       </div>
-      <button type="submit" name="encoder">Encoder</button>
+      <button type="submit" name="encoder" id="sub_btn">Encoder</button>
     </form>
   </div>
   <?php
@@ -72,20 +68,69 @@
           <td>Status</td>
         </tr>
       </thead>
-      <tbody>
-        <tr class="result-row">
-          <?php echo '<td>' . $id . '</td>';?>
-          <?php echo '<td>' . $date . '</td>';?>
-          <?php echo '<td>' . $event . '</td>';?>
-          <?php echo '<td>' . $sport . '</td>';?>
-          <?php echo '<td>' . $cote . '</td>';?>
-          <?php echo '<td>' . $mise . '</td>';?>
-          <?php echo '<td>' . $status . '</td>';?>
-        </tr>
+      <tbody id="result-row"></tbdoy>
       </tbody>
     </table>
   </div>
 
   </body>
   <script src="js.js"></script>
-</html>
+  <script src="caches.js"></script>
+  </html>
+
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "paris_sportifs_db";
+
+$event = ($_POST["event"]);
+$sport = ($_POST["sport"]);
+$date = ($_POST["date"]);
+$cote = ($_POST["cote"]);
+$mise = ($_POST["mise"]);
+$status = ($_POST["status"]);
+$datas = array(
+  array("N°"),
+  array("Date"),
+  array("Event"),
+  array("Sport"),
+  array("Cote"),
+  array("Mise"),
+  array("Status"),
+);
+array_push($datas[0],$event);
+array_push($datas[1],$date);
+array_push($datas[2],$sport);
+array_push($datas[3],$cote);
+array_push($datas[4],$mise);
+array_push($datas[5],$status);
+//print_r($datas);
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  // set the PDO error mode to exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  if(!$conn)
+  {
+    echo "Connected successfully";
+    if(isset($_POST['encoder']))
+    {
+      $sql = "INSERT INTO paris_encoder (date_, event, sport, cote, mise, status)
+      VALUES ('$event', '$sport', '$cote', '$cote', '$mise', '$status')";
+      $conn->exec($sql);
+      echo "New record created successfully";
+    }
+  }
+
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+
+$conn = null;
+?>
