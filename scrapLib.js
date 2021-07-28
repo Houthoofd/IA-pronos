@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 var colors = require('colors');
+var mysql = require('mysql');
+
 
 /*
 * Outils de scrapp de puppeteria
@@ -163,180 +165,74 @@ PuppeterIA.prototype.pdf = async function (option) {
 // };
 
 (async () => {
-  const ppia = await new PuppeterIA({ headless: true });
-  const page = await ppia.st.newPage('carrefour');
+  const ppia = await new PuppeterIA({ headless: false });
+  const page = await ppia.st.newPage('matchendirect');
   await page.setDefaultNavigationTimeout(0);
+  console.log(ppia.st.__proto__);
+  // scrapping //
   await page.goto('https://www.matchendirect.fr/').then(async function(result){
-
-    // var resultat_scrapping = await pupperteria.scrappingTools.eval(function(){
-    //   // scrapp du header pour avoir les catégories
-    //   return new Promise(async function(next){
-    //     document.getElementsByClassName('facet')[1].getElementsByClassName('facet__values__more js-more-facet-values')[0].children[0].click();
-    //     var result = [] , doneList = {};
-    //     var x = document.querySelectorAll('div.facet__text');
-    //     for await(const idiv of Array.from({length: x.length}, (c, i) => i)){
-    //         var y = x[idiv].querySelectorAll('a');
-    //         for await(const ia of Array.from({length: y.length}, (c, i) => i)){
-    //             var cat = y[ia].innerHTML.split('&nbsp;').join('').split('&amp;').join('').split(' ').filter(el => {
-    //               return el != null && el != '';
-    //             });
-    //             if(!doneList[cat.join('_')])result.push({cat : cat.join('_') , keywords : cat , baseUrl : window.location.href , url : `${y[ia].href}&page=` , num : 0});
-    //             doneList[cat.join('_')] = cat.join('_');
-    //             if(idiv == x.length - 1 && ia == y.length - 1)next(result);
-    //         }
-    //     }
-    //   })
-    // })
-    // .then(async function(header){
-    //   console.log('header OK !'.green);
-    //
-    //   async function scrapPage(url,num,result = []){
-    //     return new Promise(async function(scrap){
-    //       Promise.resolve(await page.goto(url+num))
-    //       .then(async function(){
-    //
-    //         pupperteria.scrappingTools.setPage(page);
-    //
-    //         await pupperteria.scrappingTools.eval(function(result){
-    //           // console.log(result);
-    //           return new Promise(async function(next){
-    //             var x = document.querySelectorAll('div.wrapper') , arrLength = Array.from({length: x.length}, (y, index) => index);
-    //             if(x.length == 0)next({status : 'ok' , result : result})
-    //             // console.log(arrLength);
-    //             for (const i of arrLength){
-    //                 var data = {
-    //                     // name : x[i].querySelectorAll('a.name')[0].innerHTML,
-    //                     ref : x[i].querySelectorAll('div.thumb')[0].children[0].href,
-    //                     name : x[i].querySelectorAll('div.thumb')[0].children[0].title,
-    //                     dataItemName : x[i].querySelectorAll('div.thumb')[0].children[0].title,
-    //                     dataItemBrand : x[i].querySelectorAll('div.thumb')[0].children[0].getAttribute('data-item_brand'),
-    //                     dataItemId : x[i].querySelectorAll('div.thumb')[0].children[0].getAttribute('data-item_id'),
-    //                     //img : e.querySelectorAll('div.thumb')[0].children[0].chidldren[0].src,
-    //                     baseprice : x[i].querySelectorAll('span.bigprice')[0].innerHTML.split('&nbsp;').join(''),
-    //                     type : x[i].querySelectorAll('span.type')[0].innerHTML.split('/').join(''),
-    //                     bigprice : x[i].querySelectorAll('div.baseprice')[0].innerHTML.split('\t').join('').split('\n').join('').split('>')[x[i].querySelectorAll('div.baseprice')[0].innerHTML.split('\t').join('').split('\n').join('').split('>').length - 1],
-    //                     bio : false,
-    //                 }
-    //                 if(x[i].querySelectorAll('span.labelbiobelguincarrefour').length > 0)data.bio = true;
-    //                 result.push(data);
-    //                 console.log(i,x.length - 1);
-    //                 if(x.length - 1 == i)next(result)
-    //           }
-    //         })
-    //       },result)
-    //       .then(async function(resultat){
-    //         console.log(`${url}${num}`.bgBlue.white,`scrap done !`.green);
-    //         if(typeof resultat == "object" && !Array.isArray(resultat))scrap(resultat.result);
-    //         else scrap(await scrapPage(url,num+1,resultat));
-    //       })
-    //     })
-    //     })
-    //   }
-    //
-    //   return new Promise(async function(final){
-    //     var produit_par_categories = [];
-    //
-    //     for(const i of Array.from({length: header.length}, (y, i) => i)){
-    //       console.log(`start catégorie ${header[i].cat} !`.yellow);
-    //       header[i].produits = await scrapPage(header[i].url,header[i].num);
-    //       console.log(`${header[i].cat} catégorie done !`.green);
-    //       if(i == header.length - 1){
-    //         console.log(`Finish !`.green);
-    //         final(header);
-    //       }
-    //     }
-    //   })
-    // })
-    //
-    // console.log(resultat_scrapping);
-
-    await ppia.st.evalAll([
-      function(){
-        return new Promise(async function(next){
-          document.getElementsByClassName('facet')[1].getElementsByClassName('facet__values__more js-more-facet-values')[0].children[0].click();
-          var result = [] , doneList = {};
-          var x = document.querySelectorAll('div.facet__text');
-          for await(const idiv of Array.from({length: x.length}, (c, i) => i)){
-              var y = x[idiv].querySelectorAll('a');
-              for await(const ia of Array.from({length: y.length}, (c, i) => i)){
-                  var cat = y[ia].innerHTML.split('&nbsp;').join('').split('&amp;').join('').split(' ').filter(el => {
-                    return el != null && el != '';
-                  });
-                  if(!doneList[cat.join('_')])result.push({cat : cat.join('_') , keywords : cat , baseUrl : window.location.href , url : `${y[ia].href}&page=` , num : 0});
-                  doneList[cat.join('_')] = cat.join('_');
-                  if(idiv == x.length - 1 && ia == y.length - 1)next(result);
-              }
-          }
-        })
-      },
-      ppia.st.__ppiaInstr(
-        function(header){
-          console.log('header OK !'.green);
-
-          async function scrapPage(url,num,result = []){
-            return new Promise(async function(scrap){
-              Promise.resolve(await page.goto(url+num))
-              .then(async function(){
-
-                ppia.st.page = page;
-
-                await ppia.st.eval(function(result){
-                  // console.log(result);
-                  return new Promise(async function(next){
-                    var x = document.querySelectorAll('div.wrapper') , arrLength = Array.from({length: x.length}, (y, index) => index);
-                    if(x.length == 0)next({status : 'ok' , result : result})
-                    // console.log(arrLength);
-                    for (const i of arrLength){
-                        var data = {
-                            // name : x[i].querySelectorAll('a.name')[0].innerHTML,
-                            ref : x[i].querySelectorAll('div.thumb')[0].children[0].href,
-                            name : x[i].querySelectorAll('div.thumb')[0].children[0].title,
-                            dataItemName : x[i].querySelectorAll('div.thumb')[0].children[0].title,
-                            dataItemBrand : x[i].querySelectorAll('div.thumb')[0].children[0].getAttribute('data-item_brand'),
-                            dataItemId : x[i].querySelectorAll('div.thumb')[0].children[0].getAttribute('data-item_id'),
-                            //img : e.querySelectorAll('div.thumb')[0].children[0].chidldren[0].src,
-                            baseprice : x[i].querySelectorAll('span.bigprice')[0].innerHTML.split('&nbsp;').join(''),
-                            type : x[i].querySelectorAll('span.type')[0].innerHTML.split('/').join(''),
-                            bigprice : x[i].querySelectorAll('div.baseprice')[0].innerHTML.split('\t').join('').split('\n').join('').split('>')[x[i].querySelectorAll('div.baseprice')[0].innerHTML.split('\t').join('').split('\n').join('').split('>').length - 1],
-                            bio : false,
-                        }
-                        if(x[i].querySelectorAll('span.labelbiobelguincarrefour').length > 0)data.bio = true;
-                        result.push(data);
-                        console.log(i,x.length - 1);
-                        if(x.length - 1 == i)next(result)
-                  }
-                })
-              },result)
-              .then(async function(resultat){
-                console.log(`${url}${num}`.bgBlue.white,`scrap done !`.green);
-                if(typeof resultat == "object" && !Array.isArray(resultat))scrap(resultat.result);
-                else scrap(await scrapPage(url,num+1,resultat));
-              })
-            })
-            })
-          }
-
-          return new Promise(async function(final){
-            for(const i of Array.from({length: header.length}, (y, i) => i)){
-              console.log(`start catégorie ${header[i].cat} !`.yellow);
-              header[i].produits = await scrapPage(header[i].url,header[i].num);
-              console.log(`${header[i].cat} catégorie done !`.green);
-              if(i == header.length - 1){
-                console.log(`Finish !`.green);
-                final(header);
-              }
-            }
-          })
-
+    console.log("promesse");
+    await ppia.st.eval(function(){
+      // console.log(result);
+      return new Promise(async function(next){
+        const trs = (document.querySelectorAll('#livescore')[0]).querySelectorAll('tr');
+        const mesMatch = [];
+        for(const i of Array.from({length : trs.length},(x,i) => i)){
+            const heure = ( (trs[i].querySelectorAll('td.lm1')[0].innerHTML).split('>').length == 1 ? trs[i].querySelectorAll('td.lm1')[0].innerHTML : "Nom programmer");
+            const imgs = trs[i].querySelectorAll('img');
+            const equipes = [imgs[0].alt,imgs[1].alt];
+            const score = ( (trs[i].querySelectorAll('span.lm3_score')[0].innerHTML).split('>').length == 1 ? trs[i].querySelectorAll('span.lm3_score')[0].innerHTML : "En Attente");
+            mesMatch.push({equipe_domicile : equipes[0] , equipe_ext : equipes[1] , heure : heure , score : score});
+            if(i == trs.length - 1)console.log(mesMatch);
         }
-      )
-    ])
-    .then(function(result_final){
-      console.log(result_final);
+        next(mesMatch);
+        })
+      })
+      .then(function(mesMatch){
+        var con = mysql.createConnection({
+          host: "localhost",
+          user: "root",
+          password: "",
+          database: "ia-pronos"
+        });
+        con.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!");
+           con.query(
+             "INSERT INTO football (equipe_a_domicile, equipe_ext, heure_depart, score) VALUES ?",
+             [Array.from({length : mesMatch.length} , (x,i) => Object.values(mesMatch[i]))],
+             function (err, result) {
+               if (err) console.error(err);
+               console.log("Number of records inserted: " + result.affectedRows);
+            }
+          );
+        });
+      })
     })
+ })();
+
+// code maitre yoda //
+
+// const trs = (document.querySelectorAll('#livescore')[0]).querySelectorAll('tr');
+// const mesMatch = [];
+// for(const i of Array.from({length : trs.length},(x,i) => i)){
+//     const heure = trs[i].children[0].innerHTML;
+//     const imgs = trs[i].querySelectorAll('img');
+//     const equipes = [imgs[0].alt,imgs[1].alt];
+//     const score = ( (trs[i].querySelectorAll('span.lm3_score')[0].innerHTML).split('>').length == 1 ? trs[i].querySelectorAll('span.lm3_score')[0].innerHTML : "En Attente");
+//     mesMatch.push({heure : heure , equipes : equipes , score : score});
+//     if(i == trs.length - 1)console.log(mesMatch);
+// }
+
+// INSERT INTO table_name (column1, column2, column3, ...)
+// VALUES (value1, value2, value3, ...);
 
 
-  })
-
-  // await browser.close();
-})();
+// for(const match of mesMatch)
+// {
+//   console.log();
+//   var sql = `INSERT INTO football (equipe_a_domicile, equipe_ext, heure_depart, score) VALUES ("${match.equipes[0]}", "${match.equipes[1]}", "${match.heure}", "${match.score}")`;
+//   con.query(sql, function (err, result) {
+//     if (err) throw err;
+//   });
+// }
