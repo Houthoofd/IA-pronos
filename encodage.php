@@ -40,26 +40,6 @@
       <button type="submit" name="encoder" id="sub_btn">Encoder</button>
     </form>
   </div>
-
-  <div class="encodage__container__table">
-    <h3>Résultas</h3>
-    <table>
-      <thead>
-        <tr>
-          <td>N°</td>
-          <td>Date</td>
-          <td>Evènement</td>
-          <td>Sport</td>
-          <td>Côte</td>
-          <td>Mise</td>
-          <td>Status</td>
-        </tr>
-      </thead>
-      <tbody id="result-row"></tbdoy>
-      </tbody>
-    </table>
-  </div>
-
   </body>
   <script src="js.js"></script>
   <script src="caches.js"></script>
@@ -67,14 +47,6 @@
 
 
 <?php
-
-$event = ($_POST["event"]);
-$sport = ($_POST["sport"]);
-$date = ($_POST["date"]);
-$cote = ($_POST["cote"]);
-$mise = ($_POST["mise"]);
-$status = ($_POST["status"]);
-
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -88,10 +60,35 @@ try {
 
   if(isset($_POST['encoder']))
   {
+    $event = ($_POST["event"]);
+    $sport = ($_POST["sport"]);
+    $date = ($_POST["date"]);
+    $cote = ($_POST["cote"]);
+    $mise = ($_POST["mise"]);
+    $status = ($_POST["status"]);
+
+    // Envoie des données à la base de donnéees //
     $sql = "INSERT INTO paris_encoder (date_, event, sport, cote, mise, status)
     VALUES ('$event', '$sport', '$cote', '$cote', '$mise', '$status')";
     $conn->exec($sql);
     echo "New record created successfully";
+
+    // Querry servant à rechercher les données dans la base de données et de les afficher //
+    $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
+    $stmt->execute();
+
+    // set the resulting array to associative
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll();
+    echo "<table>
+            <thead>
+              <th>id</th>
+              <th>sport</th>
+            </thead>
+            <tbody>
+            <th>$result<button>Modifier</button><button>Supprimer</button></th>
+            </tbody>
+          </table>";
   }
 
 } catch(PDOException $e) {

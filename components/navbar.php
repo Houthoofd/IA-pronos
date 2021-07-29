@@ -18,7 +18,7 @@
 
         <div class="nav__dropdown-collapse">
           <div class="nav__dropdown-content">
-            <a href="#" class="nav__dropdown-item">Football</a>
+            <a href="football.php" class="nav__dropdown-item">Football</a>
             <a href="#" class="nav__dropdown-item">Tennis</a>
             <a href="#" class="nav__dropdown-item">Baskett</a>
             <a href="#" class="nav__dropdown-item">Hockey</a>
