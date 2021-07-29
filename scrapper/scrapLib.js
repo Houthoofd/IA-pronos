@@ -169,13 +169,13 @@ PuppeterIA.prototype.pdf = async function (option) {
   const page = await ppia.st.newPage('matchendirect');
   await page.setDefaultNavigationTimeout(0);
   console.log(ppia.st.__proto__);
-  // scrapping de la navbar //
+  // scrapping //
   await page.goto('https://www.matchendirect.fr/').then(async function(result){
     console.log("promesse");
     await ppia.st.eval(function(){
       // console.log(result);
       return new Promise(async function(next){
-        const trs = (document.querySelectorAll('#menu_sport')[0]).querySelectorAll('li');
+        const trs = (document.querySelectorAll('#livescore')[0]).querySelectorAll('tr');
         const mesMatch = [];
         for(const i of Array.from({length : trs.length},(x,i) => i)){
             const heure = ( (trs[i].querySelectorAll('td.lm1')[0].innerHTML).split('>').length == 1 ? trs[i].querySelectorAll('td.lm1')[0].innerHTML : "Nom programmer");
@@ -210,3 +210,29 @@ PuppeterIA.prototype.pdf = async function (option) {
       })
     })
  })();
+
+// code maitre yoda //
+
+// const trs = (document.querySelectorAll('#livescore')[0]).querySelectorAll('tr');
+// const mesMatch = [];
+// for(const i of Array.from({length : trs.length},(x,i) => i)){
+//     const heure = trs[i].children[0].innerHTML;
+//     const imgs = trs[i].querySelectorAll('img');
+//     const equipes = [imgs[0].alt,imgs[1].alt];
+//     const score = ( (trs[i].querySelectorAll('span.lm3_score')[0].innerHTML).split('>').length == 1 ? trs[i].querySelectorAll('span.lm3_score')[0].innerHTML : "En Attente");
+//     mesMatch.push({heure : heure , equipes : equipes , score : score});
+//     if(i == trs.length - 1)console.log(mesMatch);
+// }
+
+// INSERT INTO table_name (column1, column2, column3, ...)
+// VALUES (value1, value2, value3, ...);
+
+
+// for(const match of mesMatch)
+// {
+//   console.log();
+//   var sql = `INSERT INTO football (equipe_a_domicile, equipe_ext, heure_depart, score) VALUES ("${match.equipes[0]}", "${match.equipes[1]}", "${match.heure}", "${match.score}")`;
+//   con.query(sql, function (err, result) {
+//     if (err) throw err;
+//   });
+// }
