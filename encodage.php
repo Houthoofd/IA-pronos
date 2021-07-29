@@ -10,6 +10,7 @@
   <body>
   <?php include 'components/header.php'; ?>
   <?php include 'components/navbar.php'; ?>
+  <?php include 'files/.php'; ?>
   <div class="encodage__container">
     <h3>Encoder vos paris</h3>
     <form method="post">
@@ -58,6 +59,10 @@ try {
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   echo "connection réussie";
 
+  // Querry servant à rechercher les données dans la base de données et de les afficher //
+  $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
+  $stmt->execute();
+
   if(isset($_POST['encoder']))
   {
     $event = ($_POST["event"]);
@@ -80,15 +85,16 @@ try {
     // set the resulting array to associative
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $result = $stmt->fetchAll();
-    echo "<table>
-            <thead>
-              <th>id</th>
-              <th>sport</th>
-            </thead>
-            <tbody>
-            <th>$result<button>Modifier</button><button>Supprimer</button></th>
-            </tbody>
-          </table>";
+    var_dump($result);
+    // echo "<table>
+    //         <thead>
+    //           <th>id</th>
+    //           <th>sport</th>
+    //         </thead>
+    //         <tbody>
+    //         <th>$result<button>Modifier</button><button>Supprimer</button></th>
+    //         </tbody>
+    //       </table>";
   }
 
 } catch(PDOException $e) {
