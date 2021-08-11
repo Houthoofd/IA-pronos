@@ -33,15 +33,29 @@ try {
   echo "connection réussie";
 
   // Querry servant à rechercher les données dans la base de données et de les afficher //
-  $stmt = $conn->prepare ("SELECT status FROM paris_encoder");
+  $stmt = $conn->prepare ("SELECT status, sport, cote, mise FROM paris_encoder");
   $stmt->execute();
 
   $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
   $result = $stmt->fetchAll();
 
-  $valides = array();
-  $echecs = array();
-  $total = count($result);
+
+  $valides = array(); // tableau servant à stocker les paris gagnants //
+  $echecs = array(); // tableau servant à stocker les paris perdants //
+  $football = array(); // tableau servant à stocker les paris concernant le football //
+  $tennis = array(); // tableau servant à stocker les paris concernant le tennis //
+  $basketball = array(); // tableau servant à stocker les paris concernant le basket //
+  $hockey = array(); // tableau servant à stocker les paris concernant le hockeyt //
+  $total_paris = count($result); // totalité des paris encodés //
+
+
+  foreach ($result as $key => $sports) {
+    $sport = implode($sports);
+    if($sport == 'football'){array_push($football,$status);}
+    if($sport == 'tennis'){array_push($tennis,$status);}
+    if($sport == 'basketball'){array_push($basketball,$status);}
+    if($sport == 'hockey'){array_push($hockey,$status);}
+  }
 
   foreach ($result as $key => $statuss) {
       $status = implode($statuss);
@@ -55,8 +69,26 @@ try {
   }
 
   echo "<div id='statistiques'>
-          <div id='paris_gagnés'>" .count($valides). "/" . "{$total}" . " " . "validés" . "</div>
-          <div id='paris_perdus'>" .count($echecs). "/" . "{$total}" . " " . "perdus" . "</div>
+          <div id='paris_gagnés'>" .count($valides). "/" . "{$total_paris}" . " " . "validés" . "</div>
+          <div id='paris_perdus'>" .count($echecs). "/" . "{$total_paris}" . " " . "perdus" . "</div>
+            <div id='catégories'>
+              <div id='football'>
+                  <div id='foot_paris_gagnés'>" .count($football). "/" . "{$total_paris}" . " " . "paris sur le football validés" . "</div>
+                  <div id='foot_paris_perdus'>" .count($football). "/" . "{$total_paris}" . " " . "paris sur le football perdus" . "</div>
+                  </div>
+              <div id='tennis'>
+                  <div id='tennis_paris_gagnés'>" .count($tennis). "/" . "{$total_paris}" . " " . "paris sur le tennis validés" . "</div>
+                  <div id='tennis_paris_perdus'>" .count($tennis). "/" . "{$total_paris}" . " " . "paris sur le tennis perdus" . "</div>
+                  </div>
+              <div id='basketball'>
+                  <div id='tennis_paris_gagnés'>" .count($basketball). "/" . "{$total_paris}" . " " . "paris sur le basket validés" . "</div>
+                  <div id='tennis_paris_perdus'>" .count($basketball). "/" . "{$total_paris}" . " " . "paris sur le basket perdus" . "</div>
+                    </div>
+              <div id='tennis'>
+                  <div id='tennis_paris_gagnés'>" .count($hockey). "/" . "{$total_paris}" . " " . "paris sur le hockey validés" . "</div>
+                  <div id='tennis_paris_perdus'>" .count($hockey). "/" . "{$total_paris}" . " " . "paris sur le hockey perdus" . "</div>
+                    </div>
+                </div>
         </div>";
 
   // echo "{$key}" . " " . "{$status}";

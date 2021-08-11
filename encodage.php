@@ -60,14 +60,14 @@ try {
   echo "connection réussie";
 
   // Querry servant à rechercher les données dans la base de données et de les afficher //
-  $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
+  $stmt = $conn->prepare ("SELECT id, date, event, sport, cote, mise, status FROM paris_encoder");
   $stmt->execute();
 
   $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
   $result = $stmt->fetchAll();
 
   // print_r($result);
-  echo '<div id = "tableMatch">';
+  echo "<div id = 'tableMatch'>";
   foreach ($result as $idMatch => $match) {
     echo '<div id = '.$idMatch.' class = "match">';
     foreach ($match as $field => $data) {
@@ -77,6 +77,7 @@ try {
     echo '</div>';
   }
   echo '</div>';
+  echo "<div class='buttons'><button onClick=routeur.post(Supprimer(this),"."'supprimer_table'".")>Supprimer la table</button></div>";
 
 
   if(isset($_POST['encoder']))
@@ -89,14 +90,14 @@ try {
     $status = ($_POST["status"]);
 
     // Envoie des données à la base de donnéees //
-    $sql = "INSERT INTO paris_encoder (date_, event, sport, cote, mise, status)
-    VALUES ('$event', '$sport', '$cote', '$cote', '$mise', '$status')";
+    $sql = "INSERT INTO paris_encoder (date, event, sport, cote, mise, status)
+    VALUES ('$date', '$event', '$sport', '$cote', '$mise', '$status')";
     $conn->exec($sql);
     echo "New record created successfully";
 
     // Querry servant à rechercher les données dans la base de données et de les afficher //
-    $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
-    $stmt->execute();
+    // $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
+    // $stmt->execute();
 
 
     // $last_id = $stmt->lastInsertId();
