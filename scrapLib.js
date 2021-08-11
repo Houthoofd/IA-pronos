@@ -211,6 +211,7 @@ PuppeterIA.prototype.pdf = async function (option) {
     })
  })();
 
+
 // code maitre yoda //
 
 // const trs = (document.querySelectorAll('#livescore')[0]).querySelectorAll('tr');

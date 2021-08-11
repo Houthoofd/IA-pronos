@@ -10,7 +10,7 @@
   <body>
   <?php include 'components/header.php'; ?>
   <?php include 'components/navbar.php'; ?>
-  <?php include 'files/.php'; ?>
+  <?php include 'files/outils.php'; ?>
   <div class="encodage__container">
     <h3>Encoder vos paris</h3>
     <form method="post">
@@ -42,8 +42,7 @@
     </form>
   </div>
   </body>
-  <script src="js.js"></script>
-  <script src="caches.js"></script>
+  <script src="./js.js"></script>
   </html>
 
 
@@ -52,6 +51,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 
 try {
   $conn = new PDO('mysql:host=localhost;dbname=ia-pronos', 'root', '');
@@ -62,6 +62,22 @@ try {
   // Querry servant à rechercher les données dans la base de données et de les afficher //
   $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
   $stmt->execute();
+
+  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+  $result = $stmt->fetchAll();
+
+  // print_r($result);
+  echo '<div id = "tableMatch">';
+  foreach ($result as $idMatch => $match) {
+    echo '<div id = '.$idMatch.' class = "match">';
+    foreach ($match as $field => $data) {
+      echo '<div class="'.$field.'">'.$data.'</div>';
+    }
+      echo "<div class='buttons'><button>Modifier</button><button onClick=routeur.post(Supprimer(this),"."'supprimer_paris'".")>Supprimer</button></div>";
+    echo '</div>';
+  }
+  echo '</div>';
+
 
   if(isset($_POST['encoder']))
   {
@@ -82,20 +98,13 @@ try {
     $stmt = $conn->prepare ("SELECT id, date_, event, sport, cote, mise, status FROM paris_encoder");
     $stmt->execute();
 
-    // set the resulting array to associative
-    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    $result = $stmt->fetchAll();
-    var_dump($result);
-    // echo "<table>
-    //         <thead>
-    //           <th>id</th>
-    //           <th>sport</th>
-    //         </thead>
-    //         <tbody>
-    //         <th>$result<button>Modifier</button><button>Supprimer</button></th>
-    //         </tbody>
-    //       </table>";
+
+    // $last_id = $stmt->lastInsertId();
+    // echo $last_id;
+
+
   }
+
 
 } catch(PDOException $e) {
   echo "Connection échoué: " . $e->getMessage();

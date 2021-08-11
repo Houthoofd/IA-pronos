@@ -374,3 +374,37 @@ display: grid;
     width: 50px;
     border-radius: 50%;
 }
+
+#tableMatch {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-auto-rows: 2vw;
+    font-size: 0.75vw;
+}
+.match {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 10vw;
+    text-align: center;
+}
+
+.match > * {
+    height: fit-content;
+    margin: auto;
+}
+
+.match > .buttons {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    height: 100%;
+    width: 100%;
+}
+
+.match > .buttons > button {
+    background-color: #0aff99;
+    border: none;
+    border-radius: .25rem;
+    width: 90%;
+    min-width: 10ch;
+    margin: auto;
+}

@@ -18,14 +18,4 @@ class TableRows extends RecursiveIteratorIterator {
   }
 }
 
-class Interface {
-  // passer en argument le nommbres d'inputs désirée(s) //
-  function CreerInput(nombres){
-    for($i = 0; i < nombres; i++)
-    {
-      echo "<"
-    }
-  }
-}
-
  ?>

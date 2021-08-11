@@ -11,5 +11,5 @@
   <?php include 'components/header.php'; ?>
   <?php include 'components/navbar.php'; ?>
   </body>
-  <script src="js.js"></script>
+  <script src="./js.js"></script>
 </html>
