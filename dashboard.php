@@ -12,37 +12,58 @@
   <?php include 'components/navbar.php'; ?>
 
   <div class="dashboard__container">
-    <h3 class="title__dashboard">Statistiques</h3>
-    <div class="dashboard__stats__container">
-      <div id="average__odd" class="card">
-        <h4>Côte de moyenne</h4>
-        <span>1.45</span>
-      </div>
-      <div id="average__gain" class="card">
-        <h4>Gain moyen</h4>
-        <span>10.45 euros</span>
-      </div>
-      <div id="roi" class="card">
-        <h4>Roi</h4>
-        <span>1.45</span>
-      </div>
-      <div id="nbre__paris" class="card">
-        <h4>Nombres de paris</h4>
-        <span>100</span>
-      </div>
-      <div id="paris__perdus" class="card">
-        <h4>Nombres de paris perdus</h4>
-        <span>40</span>
-      </div>
-      <div id="paris__gagnes" class="card">
-        <h4>Nombres de paris gagnés</h4>
-        <span>60</span>
-      </div>
-    </div>
-  </div>
-  <div class="dashboard__charts__container">
-    <h3>Graphiques</h3>
+
   </div>
   </body>
   <script src="js.js"></script>
 </html>
+
+
+<?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+try {
+  $conn = new PDO('mysql:host=localhost;dbname=ia-pronos', 'root', '');
+  // set the PDO error mode to exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  echo "connection réussie";
+
+  // Querry servant à rechercher les données dans la base de données et de les afficher //
+  $stmt = $conn->prepare ("SELECT status FROM paris_encoder");
+  $stmt->execute();
+
+  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+  $result = $stmt->fetchAll();
+
+  $valides = array();
+  $echecs = array();
+  $total = count($result);
+
+  foreach ($result as $key => $statuss) {
+      $status = implode($statuss);
+      if($status == "Validé"){
+        array_push($valides,$status);
+      }
+
+      if($status == "Echec"){
+        array_push($echecs,$status);
+      }
+  }
+
+  echo "<div id='statistiques'>
+          <div id='paris_gagnés'>" .count($valides). "/" . "{$total}" . " " . "validés" . "</div>
+          <div id='paris_perdus'>" .count($echecs). "/" . "{$total}" . " " . "perdus" . "</div>
+        </div>";
+
+  // echo "{$key}" . " " . "{$status}";
+
+} catch(PDOException $e) {
+  echo "Connection échoué: " . $e->getMessage();
+}
+
+$conn = null;
+?>
